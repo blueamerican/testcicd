@@ -1,0 +1,39 @@
+name: deploy
+
+on:
+  push:
+    branch:
+      - master
+  workflow_dispatch:
+
+# It is important to specify "concurrency" for the workflow,
+# to prevent concurrency between different deploys.
+concurrency: Staging
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: Staging
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup PHP 8.1
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+
+      - name: Install dependencies
+        run: |
+            composer install --no-dev --no-progress --optimize-autoloader
+
+      # then deploy this build to target with rsync
+      - name: deploy
+        uses: deployphp/action@v1
+        with:
+          dep: deploy stage -f .deploy.php
+          private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          deployer-version: "7.0.0-rc.8"
+        env:
+          STAGING_SSH_HOST: ${{ secrets.SSH_HOST }}
+          STAGING_SSH_USER: ${{ secrets.SSH_USER }}
