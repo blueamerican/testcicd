@@ -68,7 +68,7 @@ add('shared_dirs', [
 
 add('writable_dirs', []);
 
-set('writeable_mode', 'skip');
+set('writable_mode', 'skip');
 
 
 // ** Hosts **
