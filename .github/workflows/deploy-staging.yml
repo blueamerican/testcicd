@@ -37,7 +37,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      # then deploy this build to target with rsync
+      # then deploy this build to target with rsync n
       - name: Deploy
         uses: deployphp/action@v1
         with:
