@@ -37,12 +37,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      # then deploy this build to target with rsync n
+      - name: Install dependencies
+        run: |
+          composer install --no-dev --no-progress --optimize-autoloader
+
+      # then deploy this build to target with rsync
       - name: Deploy
         uses: deployphp/action@v1
         with:
           dep: deploy stage
-          deployer-version: "7.2.1"
           private-key: ${{ secrets.SSH_PRIVATE_KEY }}
         env:
           STAGING_SSH_HOST: ${{ secrets.SSH_HOST }}
