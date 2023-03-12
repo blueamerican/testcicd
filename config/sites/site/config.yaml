@@ -1,4 +1,4 @@
-base: 'https://testcicd.ddev.site/'
+base: '%env(SITE_BASE)%'
 languages:
   -
     title: English
