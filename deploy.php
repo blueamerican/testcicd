@@ -9,7 +9,9 @@ require 'contrib/rsync.php';
 
 //$deployPath = '/home/www/p485699/html/t3-dep-ws';
 $deployPath = '/var/www/vhosts/901046.jweiland-hosting.de/httpdocs/typo3cms/dworkshop3';
-//$deployPath = 'typo3cms/dworkshop';
+
+
+//$deployPath = 'typo3cms/dworkshop3';
 //$deployPathProd = '/var/www/virtual/snowowl/serve';
 $deployPathProd = '/var/www/vhosts/901046.jweiland-hosting.de/httpdocs/typo3cms/dworkshop3';
 
@@ -87,7 +89,37 @@ host('stage')
     /*->set('deploy_path', '~/t3deployws')*/
 ;
 
+/** demo task
+ *
+ * description first
+ * task definition
+ */
+desc('DEMO TASK showing writeln, run and get');
+// then task
+task('demo_task', function() {
+    writeln('run ls command:');
+    if (test("[ -d {{deploy_path}} ]")) {
+        writeln("found deploy path");
+        writeln("{{deploy_path}}");
+    }
+    run('cd {{deploy_path}} && ls -al');
+    writeln('show shared_files for stage = '. get('labels')['stage'] .':');
+    foreach(get('shared_files') as $file) {
+        writeln($file);
+    }
+    writeln('releasePath set to {{release_or_current_path}}' );
+    writeln('current + web Path set to "{{current_path}}" + "{{typo3_webroot}}"' );
+});
 
+desc('DEMO TASK showing writeln, run and get');
+// then task
+task('check_deploy_path', function() {
+    writeln('run ls command:');
+    if (test("[ -d {{deploy_path}} ]")) {
+        writeln("found deploy path");
+        writeln("{{deploy_path}}");
+    }
+});
 
 
 
@@ -99,6 +131,7 @@ host('stage')
 desc('Prepare with Rsync deployment, without use of git and composer');
 task('deploy:prepare', [
     'deploy:info',
+    'check_deploy_path',
     'deploy:setup',
     'deploy:lock',
     'deploy:release',
