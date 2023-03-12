@@ -83,7 +83,7 @@ host('stage')
     ->setDeployPath($deployPath . '/{{stageDir}}')
     ->setRemoteUser( getenv('STAGING_SSH_USER'))
     ->setPort(getenv('STAGING_SSH_PORT'))
-    //->set('http_user', getenv('STAGING_SSH_USER'))
+    ->set('http_user', getenv('STAGING_SSH_USER'))
     /*->set('deploy_path', '~/t3deployws')*/
 ;
 
