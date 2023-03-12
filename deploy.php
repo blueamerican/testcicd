@@ -87,39 +87,9 @@ host('stage')
     /*->set('deploy_path', '~/t3deployws')*/
 ;
 
-/**
- * setup live host
- */
-host('production')
-    ->setLabels([
-        'prod' => 'Production'
-    ])
-    ->set('stageDir', 'production')
-    ->setHostname(getenv('PRODUCTION_SSH_HOST'))
-    ->setDeployPath($deployPathProd . '/{{stageDir}}')
-    ->setRemoteUser(getenv('PRODUCTION_SSH_USER'))
-    ->setPort(getenv('STAGING_SSH_PORT'))
-    //->set('http_user', getenv('STAGING_SSH_USER'))
-    /*->set('deploy_path', '~/t3deployws')*/;
 
 
-/** demo task
- *
- * description first
- * task definition
- */
-desc('DEMO TASK showing writeln, run and get');
-// then task
-task('demo_task', function() {
-    writeln('run ls command:');
-    run('ls -al {{deploy_path}}');
-    writeln('show shared_files for stage = '. get('labels')['stage'] .':');
-    foreach(get('shared_files') as $file) {
-        writeln($file);
-    }
-    writeln('releasePath set to {{release_or_current_path}}' );
-    writeln('current + web Path set to "{{current_path}}" + "{{typo3_webroot}}"' );
-});
+
 
 /**
  * Rsync deployment task
